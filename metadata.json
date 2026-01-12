@@ -1,0 +1,7 @@
+{
+  "name": "Gourmet Direct - Menu Interactif",
+  "description": "Une application de menu de restaurant moderne et interactive avec un assistant IA pour des recommandations personnalisées, une gestion de panier fluide et une interface élégante.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
