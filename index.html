@@ -13,7 +13,7 @@
             background: #121212;
             min-height: 100vh;
             min-height: 100svh;
-            overflow-x: hidden;
+            overflow: hidden; /* Empêche le scroll parasite sur mobile */
             color: white;
             margin: 0;
             padding: 0;
@@ -25,23 +25,23 @@
             font-family: 'Dancing Script', cursive;
         }
         
-        /* Book 3D Logic */
         .book-container {
             perspective: 3000px;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
             width: 100%;
-            height: 100%;
-            min-height: 80vh;
+            height: 100vh;
+            height: 100svh;
+            padding: 20px;
+            transition: all 0.5s ease;
         }
 
         .book {
             position: relative;
             width: 450px;
             height: 600px;
-            transition: transform 0.5s;
+            transition: transform 0.6s cubic-bezier(0.2, 0, 0.2, 1);
             transform-style: preserve-3d;
         }
 
@@ -72,27 +72,22 @@
             user-select: none;
         }
 
-        .page-front {
-            z-index: 2;
-        }
-
+        .page-front { z-index: 2; }
         .page-back {
             transform: rotateY(180deg);
             z-index: 1;
             box-shadow: inset -3px 0 15px rgba(0,0,0,0.5);
         }
 
-        .sheet.flipped {
-            transform: rotateY(-180deg);
-        }
+        .sheet.flipped { transform: rotateY(-180deg); }
 
-        /* Navigation Helpers */
+        /* Navigation Zones - Réduites pour ne pas gêner les clics sur le menu */
         .nav-zone {
             position: absolute;
             top: 0;
             height: 100%;
-            width: 30%;
-            z-index: 50;
+            width: 15%; /* Zones plus fines sur les côtés */
+            z-index: 60;
             cursor: pointer;
         }
         .nav-prev { left: 0; }
@@ -119,20 +114,8 @@
             top: -4px;
         }
 
-        .corner-ornament {
-            position: absolute;
-            width: 80px;
-            height: 80px;
-            opacity: 0.2;
-            pointer-events: none;
-        }
-
-        .custom-scrollbar::-webkit-scrollbar {
-            width: 3px;
-        }
-        .custom-scrollbar::-webkit-scrollbar-track {
-            background: transparent;
-        }
+        .custom-scrollbar::-webkit-scrollbar { width: 3px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: transparent; }
         .custom-scrollbar::-webkit-scrollbar-thumb {
             background: #fbc02d;
             border-radius: 10px;
@@ -150,46 +133,35 @@
             left: -5%;
         }
 
-        /* MOBILE FULL SCREEN OVERRIDE */
+        /* MOBILE FULL SCREEN */
         @media (max-width: 640px) {
             .book-container {
                 padding: 0;
-                min-height: 100svh;
-                overflow: hidden;
+                background: #121212;
             }
             .book {
                 width: 100vw;
+                height: 100vh;
                 height: 100svh;
                 border-radius: 0;
             }
             .page {
-                padding: 20px 15px;
+                padding: 80px 20px 40px 20px; /* Espace pour la barre de titre fixe */
                 border-radius: 0;
                 box-shadow: none;
             }
-            .book-shadow {
-                display: none;
-            }
-            .wave-footer {
-                height: 40px;
-            }
-            .sheet {
-                /* On mobile we shift the origin slightly for a better full-page turn effect */
-                transform-origin: left center;
-            }
+            .book-shadow { display: none; }
+            .sheet { transform-origin: left center; }
+            .nav-zone { width: 10%; } /* Encore plus fin sur mobile */
         }
 
-        /* Animation utilities */
         .animate-in {
-            animation-duration: 0.3s;
-            animation-timing-function: ease-out;
-            animation-fill-mode: forwards;
+            animation: zoom-in-95 0.3s ease-out forwards;
         }
         @keyframes zoom-in-95 {
             from { opacity: 0; transform: scale(0.95); }
             to { opacity: 1; transform: scale(1); }
         }
-        .zoom-in-95 { animation-name: zoom-in-95; }
     </style>
 <script type="importmap">
 {
