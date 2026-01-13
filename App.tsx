@@ -2,10 +2,10 @@
 import React, { useState } from 'react';
 import { Category, MenuItem, CartItem } from './types';
 import { MENU_ITEMS } from './constants';
-import bookmenu from './components/bookmenu';
-import cart from './components/cart';
-import aiassistant from './components/aiassistant';
-import { ShoppingCartIcon } from './components/icons';
+import BookMenu from './components/BookMenu';
+import Cart from './components/Cart';
+import AIAssistant from './components/AIAssistant';
+import { ShoppingCartIcon } from './components/Icons';
 
 const App: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<Category | 'Tout'>('Tout');
@@ -52,33 +52,35 @@ const App: React.FC = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-[#121212]">
-      {/* Top Bar Navigation - Toujours au dessus du livre */}
-      <nav className="fixed top-0 left-0 right-0 z-[70] px-4 sm:px-8 h-20 sm:h-24 flex items-center justify-between pointer-events-none">
-        <div className="flex items-center gap-3 sm:gap-4 pointer-events-auto">
-          <div className="w-10 h-10 sm:w-12 sm:h-12 bg-[#fbc02d] rounded-lg flex items-center justify-center shadow-lg transform rotate-3">
-            <span className="text-black font-serif text-xl sm:text-2xl font-black">G</span>
+      {/* Top Bar Navigation */}
+      <nav className="fixed top-0 left-0 right-0 z-50 px-8 h-24 flex items-center justify-between pointer-events-none">
+        <div className="flex items-center gap-4 pointer-events-auto">
+          <div className="w-12 h-12 bg-[#fbc02d] rounded-lg flex items-center justify-center shadow-lg transform rotate-3">
+            <span className="text-black font-serif text-2xl font-black">G</span>
           </div>
           <div>
-            <h1 className="text-lg sm:text-2xl font-black tracking-tighter text-white drop-shadow-md leading-none uppercase">Gourmet<br/><span className="text-[#fbc02d]">Prestige</span></h1>
+            <h1 className="text-2xl font-black tracking-tighter text-white drop-shadow-md leading-none">GOURMET<br/><span className="text-[#fbc02d]">PRESTIGE</span></h1>
           </div>
         </div>
 
         <button 
           onClick={() => setIsCartOpen(true)}
-          className="pointer-events-auto relative bg-[#fbc02d] p-3 sm:p-4 rounded-full shadow-2xl text-black hover:bg-white transition-all active:scale-90"
+          className="pointer-events-auto relative bg-[#fbc02d] p-4 rounded-full shadow-2xl text-black hover:bg-white transition-all active:scale-90"
         >
-          <ShoppingCartIcon className="w-5 h-5 sm:w-6 sm:h-6" />
+          <ShoppingCartIcon className="w-6 h-6" />
           {cartCount > 0 && (
-            <span className="absolute -top-1 -right-1 bg-white text-black text-[10px] font-black w-5 h-5 sm:w-6 sm:h-6 flex items-center justify-center rounded-full border-2 border-black">
+            <span className="absolute -top-1 -right-1 bg-white text-black text-[10px] font-black w-6 h-6 flex items-center justify-center rounded-full border-2 border-black">
               {cartCount}
             </span>
           )}
         </button>
       </nav>
 
-      <main className="flex-grow flex flex-col items-center justify-center">
-        {/* Navigation Tabs - Bookmark style, cachés sur mobile pour le mode full book */}
-        <div className="hidden sm:flex gap-3 mb-12 z-10 px-6 overflow-x-auto no-scrollbar max-w-full">
+      {/* Main Table Content */}
+      <main className="flex-grow flex flex-col items-center justify-center pt-24">
+        
+        {/* Navigation Tabs - Bookmark style */}
+        <div className="flex gap-3 mb-12 z-10 px-6 overflow-x-auto no-scrollbar max-w-full">
           {categories.map(cat => (
             <button
               key={cat.label}
@@ -94,6 +96,7 @@ const App: React.FC = () => {
           ))}
         </div>
 
+        {/* The 3D Book */}
         <BookMenu 
           items={MENU_ITEMS} 
           onAddToCart={addToCart} 
@@ -101,11 +104,12 @@ const App: React.FC = () => {
           setCurrentPageIndex={setCurrentPageIndex}
         />
 
-        <p className="hidden sm:block mt-12 text-[#fbc02d]/40 text-[10px] font-black uppercase tracking-[0.4em] animate-pulse">
+        <p className="mt-12 text-[#fbc02d]/40 text-[10px] font-black uppercase tracking-[0.4em] animate-pulse">
           Feuilletez notre carte • Cliquez pour tourner
         </p>
       </main>
 
+      {/* Components Overlay */}
       <Cart 
         isOpen={isCartOpen} 
         onClose={() => setIsCartOpen(false)} 
@@ -113,6 +117,7 @@ const App: React.FC = () => {
         onUpdateQuantity={updateCartQuantity}
       />
       
+      {/* Custom styled AI Button */}
       <div className="assistant-custom">
         <AIAssistant />
       </div>
