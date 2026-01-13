@@ -3,8 +3,15 @@ import { GoogleGenAI } from "@google/genai";
 import { MENU_ITEMS } from "../constants";
 
 export const getGeminiRecommendation = async (userPrompt: string) => {
-  // Always use the named parameter for apiKey and use process.env.API_KEY directly
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  // On s'assure que la clé existe avant d'initialiser pour éviter un crash
+  const apiKey = process.env.API_KEY;
+  
+  if (!apiKey) {
+    console.error("API_KEY is missing from environment variables.");
+    return "Je suis temporairement indisponible (Clé API manquante). Veuillez contacter l'administrateur.";
+  }
+
+  const ai = new GoogleGenAI({ apiKey });
   
   const menuContext = JSON.stringify(MENU_ITEMS.map(item => ({
     id: item.id,
@@ -27,7 +34,6 @@ export const getGeminiRecommendation = async (userPrompt: string) => {
   `;
 
   try {
-    // Calling generateContent with the appropriate model for basic text tasks
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
       contents: userPrompt,
@@ -37,7 +43,6 @@ export const getGeminiRecommendation = async (userPrompt: string) => {
       },
     });
 
-    // Accessing .text as a property, not a method
     return response.text || "Désolé, je n'ai pas pu générer de recommandation pour le moment.";
   } catch (error) {
     console.error("Gemini API Error:", error);
