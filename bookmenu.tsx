@@ -1,7 +1,7 @@
 
 import React, { useState } from 'react';
 import { MenuItem } from '../types';
-import { PlusIcon, XIcon } from './Icons';
+import { PlusIcon, XIcon, ChevronRightIcon } from './icons';
 
 interface MenuItemRowProps {
   item: MenuItem;
@@ -15,7 +15,7 @@ const MenuItemRow: React.FC<MenuItemRowProps> = ({
   onShowDetails 
 }) => (
   <div 
-    className="flex items-center gap-3 mb-4 sm:mb-5 group cursor-pointer pointer-events-auto" 
+    className="flex items-center gap-3 mb-4 sm:mb-5 group cursor-pointer" 
     onClick={(e) => { e.stopPropagation(); onShowDetails(item); }}
   >
     <div className="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border border-[#fbc02d]/30 flex-shrink-0 group-hover:scale-110 transition-transform duration-300">
@@ -83,27 +83,23 @@ const BookMenu: React.FC<BookMenuProps> = ({ items, onAddToCart, currentPageInde
 
   return (
     <div className="book-container">
-      {/* Modal Détails - Fermeture par clic sur l'image */}
       {selectedItem && (
         <div 
           className="fixed inset-0 z-[100] flex items-center justify-center p-0 sm:p-4 bg-black/95 backdrop-blur-md transition-opacity duration-300"
           onClick={() => setSelectedItem(null)}
         >
           <div 
-            className="w-full h-full sm:h-auto sm:max-w-lg bg-[#1a1a1d] border-0 sm:border sm:border-[#fbc02d]/20 rounded-none shadow-2xl overflow-y-auto sm:overflow-hidden animate-in"
+            className="w-full h-full sm:h-auto sm:max-w-lg bg-[#1a1a1d] border-0 sm:border sm:border-[#fbc02d]/20 rounded-none shadow-2xl overflow-y-auto sm:overflow-hidden animate-in zoom-in-95 duration-300"
             onClick={e => e.stopPropagation()}
           >
             <div 
               className="relative h-64 sm:h-96 overflow-hidden cursor-pointer group"
               onClick={() => setSelectedItem(null)}
             >
-              <img src={selectedItem.image} alt={selectedItem.name} className="w-full h-full object-cover" />
-              <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent"></div>
-              <div className="absolute top-4 right-4 bg-black/50 p-2 rounded-full">
-                <XIcon className="w-5 h-5 text-white" />
-              </div>
-              <div className="absolute bottom-4 left-0 w-full text-center text-[10px] text-white/50 uppercase tracking-[0.2em] sm:hidden">
-                Touchez l'image pour revenir au menu
+              <img src={selectedItem.image} alt={selectedItem.name} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+              <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-300"></div>
+              <div className="absolute top-4 right-4 bg-black/50 hover:bg-[#fbc02d] text-white hover:text-black p-2 rounded-full transition-all">
+                <XIcon className="w-5 h-5" />
               </div>
             </div>
             
@@ -111,14 +107,17 @@ const BookMenu: React.FC<BookMenuProps> = ({ items, onAddToCart, currentPageInde
               <Ornament className="top-0 right-0 rotate-90 !opacity-40" />
               <div className="flex justify-between items-end mb-6">
                 <div>
-                  <span className="text-[10px] uppercase tracking-[0.3em] text-[#fbc02d] font-bold mb-1 block">Carte Prestige</span>
+                  <span className="text-[10px] uppercase tracking-[0.3em] text-[#fbc02d] font-bold mb-1 block">L'Art du Goût</span>
                   <h3 className="text-2xl sm:text-3xl font-black text-white uppercase tracking-tighter leading-none">{selectedItem.name}</h3>
                 </div>
                 <span className="text-2xl sm:text-3xl font-black text-[#fbc02d]">{selectedItem.price}.0€</span>
               </div>
               <div className="space-y-6">
                 <div>
-                  <h4 className="text-[11px] font-black uppercase tracking-widest text-stone-500 mb-3">Composition</h4>
+                  <h4 className="text-[11px] font-black uppercase tracking-widest text-stone-500 mb-3 flex items-center gap-2">
+                    <div className="w-1 h-1 bg-[#fbc02d] rounded-full"></div>
+                    Composition
+                  </h4>
                   <ul className="grid grid-cols-2 gap-y-2 gap-x-4">
                     {selectedItem.ingredients.map((ing, idx) => (
                       <li key={idx} className="text-[11px] sm:text-xs text-stone-300 flex items-start gap-2">
@@ -136,7 +135,7 @@ const BookMenu: React.FC<BookMenuProps> = ({ items, onAddToCart, currentPageInde
                       onAddToCart(selectedItem);
                       setSelectedItem(null);
                     }}
-                    className="flex-[2] bg-[#fbc02d] text-black py-4 font-black uppercase tracking-widest text-[11px] hover:bg-white transition-all active:scale-95"
+                    className="flex-1 bg-[#fbc02d] text-black py-4 font-black uppercase tracking-widest text-[10px] sm:text-xs hover:bg-white transition-all active:scale-95"
                   >
                     Ajouter au panier
                   </button>
@@ -149,91 +148,73 @@ const BookMenu: React.FC<BookMenuProps> = ({ items, onAddToCart, currentPageInde
 
       <div className="relative w-full h-full flex items-center justify-center">
         <div className="book-shadow"></div>
-        
-        {/* Navigation Zones - Déplacées ici pour être toujours accessibles */}
         <div className="nav-zone nav-prev" onClick={() => navigate('prev')}></div>
         <div className="nav-zone nav-next" onClick={() => navigate('next')}></div>
 
-        <div className="book" style={{ transform: (currentPageIndex > 0.5 && window.innerWidth > 640) ? 'translateX(25%)' : 'none' }}>
+        <div className="book" style={{ transform: currentPageIndex > 0.5 ? 'translateX(25%)' : 'none' }}>
           
-          {/* FEUILLE 3 (Boissons) */}
           <div className={`sheet ${currentPageIndex >= 3 ? 'flipped' : ''}`} style={{ zIndex: 1 }}>
             <div className="page page-front custom-scrollbar overflow-y-auto">
                 <Ornament className="top-0 right-0 rotate-90" />
-                <h2 className="text-2xl sm:text-3xl font-black yellow-accent mb-6 uppercase tracking-tighter">Boissons</h2>
+                <h2 className="text-2xl sm:text-3xl font-black yellow-accent mb-6 sm:mb-10 uppercase tracking-tighter">Boissons</h2>
                 <div className="space-y-1">
                   {boissons.map(item => <MenuItemRow key={item.id} item={item} onAddToCart={onAddToCart} onShowDetails={setSelectedItem} />)}
                 </div>
                 <div className="wave-footer"></div>
-                <div className="absolute bottom-2 left-0 w-full text-center text-[9px] text-stone-900 font-bold uppercase">P.05</div>
+                <div className="absolute bottom-2 left-0 w-full text-center text-[9px] sm:text-[10px] text-stone-900 font-bold z-10 uppercase">P.05</div>
             </div>
-            <div className="page page-back bg-[#1a1a1d] flex flex-col items-center justify-center text-center p-8">
-               <div className="border border-[#fbc02d] p-6 relative">
-                 <h2 className="text-2xl font-black text-white mb-2 italic">Merci.</h2>
+            <div className="page page-back bg-[#1a1a1d] flex flex-col items-center justify-center text-center p-8 sm:p-12">
+               <div className="border border-[#fbc02d] p-6 sm:p-8 relative">
+                 <h2 className="text-2xl sm:text-3xl font-black text-white mb-2 italic">Merci.</h2>
                  <p className="text-[10px] text-[#fbc02d] tracking-[0.3em] uppercase mb-6">À bientôt</p>
-                 <div className="text-[8px] text-stone-400 space-y-1 uppercase tracking-widest">
-                    <p>www.gourmetprestige.fr</p>
-                    <p>Paris • France</p>
-                 </div>
                </div>
                <div className="wave-footer !bg-[#222]"></div>
             </div>
           </div>
 
-          {/* FEUILLE 2 (Plats & Desserts) */}
           <div className={`sheet ${currentPageIndex >= 2 ? 'flipped' : ''}`} style={{ zIndex: 2 }}>
             <div className="page page-front custom-scrollbar overflow-y-auto">
                 <Ornament className="top-0 right-0 rotate-90" />
-                <h2 className="text-2xl sm:text-3xl font-black yellow-accent mb-6 uppercase tracking-tighter">Plats</h2>
+                <h2 className="text-2xl sm:text-3xl font-black yellow-accent mb-6 sm:mb-10 uppercase tracking-tighter">Nos Plats</h2>
                 <div className="space-y-1">
                   {plats.map(item => <MenuItemRow key={item.id} item={item} onAddToCart={onAddToCart} onShowDetails={setSelectedItem} />)}
                 </div>
                 <div className="wave-footer"></div>
-                <div className="absolute bottom-2 left-0 w-full text-center text-[9px] text-stone-900 font-bold uppercase">P.03</div>
+                <div className="absolute bottom-2 left-0 w-full text-center text-[9px] sm:text-[10px] text-stone-900 font-bold z-10 uppercase">P.03</div>
             </div>
             <div className="page page-back custom-scrollbar overflow-y-auto">
                 <Ornament className="top-0 left-0 rotate-180" />
-                <h2 className="text-2xl sm:text-3xl font-black yellow-accent mb-6 uppercase tracking-tighter">Desserts</h2>
+                <h2 className="text-2xl sm:text-3xl font-black yellow-accent mb-6 sm:mb-10 uppercase tracking-tighter">Desserts</h2>
                 <div className="space-y-1">
                   {desserts.map(item => <MenuItemRow key={item.id} item={item} onAddToCart={onAddToCart} onShowDetails={setSelectedItem} />)}
                 </div>
                 <div className="wave-footer"></div>
-                <div className="absolute bottom-2 left-0 w-full text-center text-[9px] text-stone-900 font-bold uppercase">P.04</div>
+                <div className="absolute bottom-2 left-0 w-full text-center text-[9px] sm:text-[10px] text-stone-900 font-bold z-10 uppercase">P.04</div>
             </div>
           </div>
 
-          {/* FEUILLE 1 (Intro & Entrées) */}
           <div className={`sheet ${currentPageIndex >= 1 ? 'flipped' : ''}`} style={{ zIndex: 3 }}>
             <div className="page page-front">
                 <div className="flex-grow flex flex-col items-center justify-center text-center px-4 relative">
-                  <span className="font-cursive text-2xl yellow-accent mb-2">Héritage</span>
-                  <p className="text-stone-300 text-[11px] leading-relaxed max-w-[250px]">
-                    L'excellence de la gastronomie française à votre table.
+                  <span className="font-cursive text-2xl sm:text-3xl yellow-accent mb-2">Notre Philosophie</span>
+                  <p className="text-stone-300 text-[11px] sm:text-xs leading-relaxed max-w-[250px]">
+                    L'art de la table rencontre l'élégance du goût.
                   </p>
-                  <div className="mt-8 grid grid-cols-2 gap-3 w-full px-4">
-                    <div className="aspect-square bg-[#222] border border-[#fbc02d]/20 rounded-full p-2">
-                        <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=300&q=80" className="rounded-full w-full h-full object-cover grayscale" alt="Food" />
-                    </div>
-                    <div className="aspect-square bg-[#222] border border-[#fbc02d]/20 rounded-full p-2">
-                        <img src="https://images.unsplash.com/photo-1476224489421-38c584e8d1fe?auto=format&fit=crop&w=300&q=80" className="rounded-full w-full h-full object-cover grayscale" alt="Food" />
-                    </div>
-                  </div>
                 </div>
                 <div className="wave-footer"></div>
-                <div className="absolute bottom-2 left-0 w-full text-center text-[9px] text-stone-900 font-bold uppercase">P.01</div>
+                <div className="absolute bottom-2 left-0 w-full text-center text-[9px] sm:text-[10px] text-stone-900 font-bold z-10 uppercase">P.01</div>
             </div>
             <div className="page page-back custom-scrollbar overflow-y-auto">
                 <Ornament className="top-0 left-0 rotate-180" />
-                <h2 className="text-2xl sm:text-3xl font-black yellow-accent mb-6 uppercase tracking-tighter">Entrées</h2>
+                <h2 className="text-2xl sm:text-3xl font-black yellow-accent mb-6 sm:mb-10 uppercase tracking-tighter">Entrées</h2>
                 <div className="space-y-1">
                   {entrees.map(item => <MenuItemRow key={item.id} item={item} onAddToCart={onAddToCart} onShowDetails={setSelectedItem} />)}
                 </div>
                 <div className="wave-footer"></div>
-                <div className="absolute bottom-2 left-0 w-full text-center text-[9px] text-stone-900 font-bold uppercase">P.02</div>
+                <div className="absolute bottom-2 left-0 w-full text-center text-[9px] sm:text-[10px] text-stone-900 font-bold z-10 uppercase">P.02</div>
             </div>
           </div>
 
-          {/* FEUILLE 0 (Couverture) */}
           <div className={`sheet ${currentPageIndex >= 0.5 ? 'flipped' : ''}`} style={{ zIndex: 4 }}>
             <div className="page page-front !p-0">
                 <div className="h-[55%] w-full relative bg-[#121212] flex items-center justify-center">
@@ -241,23 +222,12 @@ const BookMenu: React.FC<BookMenuProps> = ({ items, onAddToCart, currentPageInde
                          <img src="https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80" className="w-full h-full object-cover" alt="Main dish" />
                     </div>
                     <div className="relative z-10 text-center px-4">
-                        <span className="font-cursive text-3xl yellow-accent block mb-2">Menu</span>
-                        <h1 className="text-5xl font-black text-white leading-none tracking-tighter uppercase">GOURMET<br/><span className="yellow-accent">PRESTIGE</span></h1>
-                        <div className="mt-4 inline-block px-4 py-1 border border-[#fbc02d] text-[8px] yellow-accent uppercase tracking-[0.2em]">Saison 2025</div>
+                        <span className="font-cursive text-3xl sm:text-4xl yellow-accent block mb-2">Special</span>
+                        <h1 className="text-5xl sm:text-6xl font-black text-white leading-none tracking-tighter uppercase">FOOD<br/><span className="yellow-accent">MENU</span></h1>
                     </div>
                 </div>
                 <div className="h-[45%] bg-[#1a1a1d] p-6 flex flex-col justify-end relative">
                     <div className="wave-footer !h-32"></div>
-                    <div className="relative z-10 flex justify-between items-end mb-4">
-                        <div className="text-[8px] text-stone-900 font-bold uppercase leading-tight">
-                            <p>Art de vivre</p>
-                            <p>Paris • France</p>
-                        </div>
-                        <div className="text-[8px] text-stone-900 font-bold uppercase leading-tight text-right">
-                            <p>Service Premium</p>
-                            <p>01 23 45 67 89</p>
-                        </div>
-                    </div>
                 </div>
             </div>
             <div className="page page-back flex flex-col items-center justify-center p-6 bg-[#1a1a1d]">
@@ -268,14 +238,9 @@ const BookMenu: React.FC<BookMenuProps> = ({ items, onAddToCart, currentPageInde
                     alt="Chef"
                   />
                </div>
-               <h3 className="font-cursive text-2xl yellow-accent mb-4">Le Mot du Chef</h3>
-               <p className="text-[10px] text-stone-400 text-center leading-relaxed italic max-w-xs">
-                 "Chaque ingrédient est choisi pour sa pureté, chaque plat est une émotion partagée."
-               </p>
-               <div className="mt-8 h-px w-16 bg-[#fbc02d]/30"></div>
+               <h3 className="font-cursive text-2xl yellow-accent mb-4">L'Art du Chef</h3>
             </div>
           </div>
-
         </div>
       </div>
     </div>

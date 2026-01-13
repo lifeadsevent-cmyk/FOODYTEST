@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { CartItem } from '../types';
-import { XIcon, PlusIcon, MinusIcon, ShoppingCartIcon } from './Icons';
+import { XIcon, PlusIcon, MinusIcon, ShoppingCartIcon } from './icons';
 
 interface CartProps {
   isOpen: boolean;
@@ -76,21 +76,10 @@ const Cart: React.FC<CartProps> = ({ isOpen, onClose, items, onUpdateQuantity })
 
         {items.length > 0 && (
           <div className="p-8 bg-[#121212] border-t border-white/5 space-y-6">
-            <div className="space-y-2">
-                <div className="flex justify-between items-center text-stone-500 text-xs uppercase tracking-widest font-bold">
-                    <span>Sous-total</span>
-                    <span className="text-white">{total}€</span>
-                </div>
-                <div className="flex justify-between items-center text-stone-500 text-xs uppercase tracking-widest font-bold">
-                    <span>Service</span>
-                    <span className="text-[#fbc02d]">Offert</span>
-                </div>
-            </div>
             <div className="flex justify-between items-center text-3xl font-black text-white pt-4 border-t border-white/10">
               <span className="uppercase tracking-tighter">Total</span>
               <span className="text-[#fbc02d]">{total}€</span>
             </div>
-            
             <button className="w-full bg-[#fbc02d] text-black py-5 rounded-none font-black uppercase tracking-[0.2em] text-sm hover:bg-white transition-all shadow-2xl active:scale-95">
               Confirmer la commande
             </button>

@@ -2,10 +2,10 @@
 import React, { useState } from 'react';
 import { Category, MenuItem, CartItem } from './types';
 import { MENU_ITEMS } from './constants';
-import BookMenu from './components/BookMenu';
-import Cart from './components/Cart';
-import AIAssistant from './components/AIAssistant';
-import { ShoppingCartIcon } from './components/Icons';
+import BookMenu from './components/bookmenu';
+import Cart from './components/cart';
+import AIAssistant from './components/aiassistant';
+import { ShoppingCartIcon } from './components/icons';
 
 const App: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<Category | 'Tout'>('Tout');
@@ -76,10 +76,7 @@ const App: React.FC = () => {
         </button>
       </nav>
 
-      {/* Main Table Content */}
       <main className="flex-grow flex flex-col items-center justify-center pt-24">
-        
-        {/* Navigation Tabs - Bookmark style */}
         <div className="flex gap-3 mb-12 z-10 px-6 overflow-x-auto no-scrollbar max-w-full">
           {categories.map(cat => (
             <button
@@ -96,7 +93,6 @@ const App: React.FC = () => {
           ))}
         </div>
 
-        {/* The 3D Book */}
         <BookMenu 
           items={MENU_ITEMS} 
           onAddToCart={addToCart} 
@@ -109,7 +105,6 @@ const App: React.FC = () => {
         </p>
       </main>
 
-      {/* Components Overlay */}
       <Cart 
         isOpen={isCartOpen} 
         onClose={() => setIsCartOpen(false)} 
@@ -117,10 +112,7 @@ const App: React.FC = () => {
         onUpdateQuantity={updateCartQuantity}
       />
       
-      {/* Custom styled AI Button */}
-      <div className="assistant-custom">
-        <AIAssistant />
-      </div>
+      <AIAssistant />
     </div>
   );
 };

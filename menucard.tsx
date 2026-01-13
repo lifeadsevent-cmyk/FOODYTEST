@@ -1,7 +1,8 @@
 
 import React from 'react';
 import { MenuItem } from '../types';
-import { PlusIcon } from './Icons';
+// Fix: Corrected import casing from './Icons' to './icons' to match the actual filename and ensure consistent imports across the project.
+import { PlusIcon } from './icons';
 
 interface MenuCardProps {
   item: MenuItem;
