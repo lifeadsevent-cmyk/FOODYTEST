@@ -2,7 +2,7 @@
 import React, { useState } from 'react';
 import { Category, MenuItem, CartItem } from './types';
 import { MENU_ITEMS } from './constants';
-import BookMenu from './components/bookmenu';
+import bookmenu from './components/bookmenu';
 import Cart from './components/Cart';
 import AIAssistant from './components/AIAssistant';
 import { ShoppingCartIcon } from './components/Icons';
