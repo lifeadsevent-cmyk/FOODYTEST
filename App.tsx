@@ -4,7 +4,7 @@ import { Category, MenuItem, CartItem } from './types';
 import { MENU_ITEMS } from './constants';
 import bookmenu from './components/bookmenu';
 import cart from './components/cart';
-import AIAssistant from './components/AIAssistant';
+import aiassistant from './components/aiassistant';
 import { ShoppingCartIcon } from './components/icons';
 
 const App: React.FC = () => {
