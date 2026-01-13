@@ -5,7 +5,7 @@ import { MENU_ITEMS } from './constants';
 import bookmenu from './components/bookmenu';
 import cart from './components/cart';
 import AIAssistant from './components/AIAssistant';
-import { ShoppingCartIcon } from './components/Icons';
+import { ShoppingCartIcon } from './components/icons';
 
 const App: React.FC = () => {
   const [activeCategory, setActiveCategory] = useState<Category | 'Tout'>('Tout');
